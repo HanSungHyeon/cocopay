@@ -137,7 +137,7 @@
     </tr>
     <tr align="center"> 
         <td><strong>간편 비밀번호</strong></td>
-        <td><strong>지문 등록</strong>/td>
+        <td><strong>지문 등록</strong></td>
     </tr>
     <tr align="center"> 
         <td> <img src="assets/gif/mobile/03_password.gif" height="450"> </td>
