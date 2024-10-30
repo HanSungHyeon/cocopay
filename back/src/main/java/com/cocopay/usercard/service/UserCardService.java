@@ -95,11 +95,11 @@ public class UserCardService {
         Faker faker = new Faker(new Locale("ko"));
         long start = System.currentTimeMillis();
 
-        list.parallelStream()
-                .forEach(v -> {
-                    String barcodeNum = makeBarcode(userId, v.getId(), faker);
-                    v.setBarcodeNum(barcodeNum);
-                });
+        for (MainCardDto mainCardDto : list) {
+            String barcodeNum = faker.numerify("############");
+            barcodeKeyService.barcodeSave(userId, mainCardDto.getId(), barcodeNum);
+            mainCardDto.setBarcodeNum(barcodeNum);
+        }
 
         long end = System.currentTimeMillis() - start;
         log.info("end : {}", end);
