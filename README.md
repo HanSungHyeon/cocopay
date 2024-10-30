@@ -418,11 +418,24 @@
 
 - **비동기 로직 교체**
  ```java
-        for (MainCardDto mainCardDto : list) {
-        String barcodeNum = faker.numerify("############");
-        barcodeKeyService.barcodeSave(userId, mainCardDto.getId(), barcodeNum);
-        mainCardDto.setBarcodeNum(barcodeNum);
-    }
+@Async
+public void barcodeSave(int userId, int cardId, String barcodeNum) {
+  log.info("바코드 세이브 시작");
+  long start = System.currentTimeMillis();
+
+  BarcodeKey barcodeKey = redisMapper.toBarcodeKey(userId, cardId, barcodeNum);
+
+  barcodeKeyRepository.save(barcodeKey);
+  long end = System.currentTimeMillis();
+  log.info("바코드 세이브 끝 : {}", end - start);
+  log.info("####### 스레드 이름 : " + Thread.currentThread().getName());
+}
+...
+for (MainCardDto mainCardDto : list) {
+String barcodeNum = faker.numerify("############");
+barcodeKeyService.barcodeSave(userId, mainCardDto.getId(), barcodeNum);
+mainCardDto.setBarcodeNum(barcodeNum);
+}
 ```
   1. 병렬 스트림은 CPU 바운드에 적합하며 IO바운드의 경우 비동기 통신이 효과적임
   2. 해당 로직은 바코드 저장을 위해 redis와 통신하는 과정이 포함되어 있음.
