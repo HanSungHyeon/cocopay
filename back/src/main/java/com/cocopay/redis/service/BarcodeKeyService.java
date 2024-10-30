@@ -7,6 +7,7 @@ import com.cocopay.redis.mapper.RedisMapper;
 import com.cocopay.redis.repository.BarcodeKeyRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -18,6 +19,7 @@ public class BarcodeKeyService {
     private final BarcodeKeyRepository barcodeKeyRepository;
     private final RedisMapper redisMapper;
 
+    @Async
     public void barcodeSave(int userId, int cardId, String barcodeNum) {
         log.info("바코드 세이브 시작");
         long start = System.currentTimeMillis();
