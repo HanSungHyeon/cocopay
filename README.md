@@ -416,6 +416,19 @@
  
   ![병렬스트림.png](assets/병렬스트림.png)
 
+- **비동기 로직 교체**
+ ```java
+        for (MainCardDto mainCardDto : list) {
+        String barcodeNum = faker.numerify("############");
+        barcodeKeyService.barcodeSave(userId, mainCardDto.getId(), barcodeNum);
+        mainCardDto.setBarcodeNum(barcodeNum);
+    }
+```
+  1. 병렬 스트림은 CPU 바운드에 적합하며 IO바운드의 경우 비동기 통신이 효과적임
+  2. 해당 로직은 바코드 저장을 위해 redis와 통신하는 과정이 포함되어 있음.
+
+ps. 논블로킹을 위한 webflux 적용, 정리 후 코드 병합 예정 
+
 - **아토믹 패턴**
     - UI 컴포넌트를 가장 작은 단위인 Atom(원자) 단위로 쪼개고 합치며 디자인 및 개발하는 패턴
     - 이번 프로젝트의 경우 atom, molecule, organism으로 나누어 진행 함
